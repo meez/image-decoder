@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/22.0">
+    <id>meez.test.Unit</id>
+    <filename>unittest</filename>
+    <name>AIR UnitTest Harness</name>
+    <versionNumber>0.1</versionNumber>
+    <supportedProfiles>extendedDesktop</supportedProfiles>
+    <initialWindow>
+        <renderMode>direct</renderMode>
+        <depthAndStencil>true</depthAndStencil>
+        <content>unittest.swf</content>
+        <fullScreen>false</fullScreen>
+        <autoOrients>true</autoOrients>
+        <visible>true</visible>
+        <!-- Keyboard Panning implemented in software due to AIR bug in GPU mode -->
+        <softKeyboardBehavior>none</softKeyboardBehavior>
+    </initialWindow>
+
+    <extensions>
+    </extensions>
+
+</application>

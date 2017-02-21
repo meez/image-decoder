@@ -1,0 +1,6 @@
+[submodule "ant"]
+	path = ant
+	url = git@petermd_github:meez/air-ant-support.git
+[submodule "Flash-Animated-GIF-Library"]
+	path = Flash-Animated-GIF-Library
+	url = git@petermd_github:meez/Flash-Animated-GIF-Library

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ANE" default="all" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <!-- Support Files -->
+    <property file="project.properties"/>
+    <import file="ant/air.xml"/>
+    <property file="build.properties"/>
+
+    <!-- Paths -->
+    <property name="src.root" location="src"/>
+    <property name="lib.root" location="lib"/>
+
+    <property name="build.root" location="build"/>
+    <property name="build.package" location="build/package"/>
+
+    <!-- All -->
+    <target name="all" depends="clean, compile" description="Full build"/>
+
+    <!-- Init -->
+    <target name="init">
+        <mkdir dir="${build.root}"/>
+        <mkdir dir="${build.package}"/>
+    </target>
+
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="${build.root}"/>
+    </target>
+
+    <!-- Third Party Libraries -->
+    <target name="dependencies">
+
+        <path id="src.path">
+            <pathelement location="src/main/as3"/>
+            <pathelement location='Flash-Animated-GIF-Library/AS3GifPlayer/src'/>
+        </path>
+
+        <path id="test.path">
+            <path refid="src.path"/>
+            <pathelement location="src/test/resources"/>
+        </path>
+
+    </target>
+
+    <!-- Compile -->
+    <target name="compile" depends="init,dependencies" description="Build SWC library">
+
+        <compc
+                pathRef="src.path"
+                configxml="${src.root}/main/resources/lib.xml"
+                sdkPath="${air.sdk.home}"
+                debug="true"
+                output="${build.package}/${project.artifactId}-${project.version}.swc">
+        </compc>
+
+    </target>
+
+    <!-- Compile and run Unit Tests - Build will fail if Unit Tests fail -->
+    <target name="unit-tests" depends="compile">
+
+        <asc mainClass="${src.root}/test/as3/RunTests.as"
+             pathRef="test.path"
+             debug="true"
+             sdkConfig="air"
+             configXML="${src.root}/test/resources/web-sd.xml"
+             output="${build.root}/unittest.swf">
+            <arg line='-library-path+=${src.root}/test/lib'/>
+        </asc>
+
+        <echo message="Launching/Running Unit Tests"/>
+
+        <adl-desktop
+             profile="extendedDesktop"
+             descriptor="${src.root}/test/resources/unit-test.xml"
+             approot="${build.root}">
+            <arg line=""/>
+        </adl-desktop>
+
+    </target>
+
+    <!-- Repository -->
+    <target name="install">
+
+        <artifact:pom
+                id="ane.pom"
+                groupId="${project.groupId}"
+                artifactId="${project.artifactId}"
+                version="${project.version}"
+                packaging="swc">
+        </artifact:pom>
+
+        <!-- Workaround for https://jira.codehaus.org/browse/MANTTASKS-170 -->
+        <artifact:writepom pomRefId="ane.pom" file="${build.package}/${project.artifactId}-pom.xml"/>
+        <artifact:pom id="build.pom" file="${build.package}/${project.artifactId}-pom.xml"/>
+
+        <artifact:install file="${build.package}/${project.artifactId}-${project.version}.swc" pomRefId="build.pom"/>
+
+    </target>
+
+</project>
