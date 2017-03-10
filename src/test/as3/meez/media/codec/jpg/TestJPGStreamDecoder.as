@@ -1,30 +1,24 @@
-package meez.media.codec.gif
+package meez.media.codec.jpg 
 {
 
 import asunit.framework.AsynchronousTestCase;
-import meez.media.codec.BaseStreamDecoderTest;
-
-
-import flash.events.Event;
-
 import flash.utils.ByteArray;
-
-import meez.media.codec.DataConsumer;
+import meez.media.codec.BaseStreamDecoderTest;
 import meez.media.codec.FrameConsumer;
 import meez.media.codec.OutputTracker;
+import meez.media.codec.jpg.JPGStreamDecoder;
+import meez.media.codec.BaseStreamDecoderTest;
 
-import mockolate.prepare;
-
-/** Unit-test for GIFStreamDecoder */
-public class TestGIFStreamDecoder extends BaseStreamDecoderTest
+public class TestJPGStreamDecoder extends BaseStreamDecoderTest
 {
-    // Set
-
-    [Embed(source="/gif/lucy-animated.gif", mimeType="application/octet-stream")]
-    private static const LUCY_ANIMATED:Class;
-
+    // Definitions
+    
+    /** Test Image */
+    [Embed(source="/jpg/lucy-static.jpg",mimeType="application/octet-stream")]
+    private static const LUCY_STATIC:Class;
+    
     // Tests
-
+    
     [Test]
     public function testRubbish():void
     {
@@ -33,7 +27,8 @@ public class TestGIFStreamDecoder extends BaseStreamDecoderTest
         },addAsync(function(reason:String):void {
             trace("expected failure: "+reason);
         }));
-        var decoder:GIFStreamDecoder=new GIFStreamDecoder(output);
+        
+        var decoder:JPGStreamDecoder=new JPGStreamDecoder(output);
 
         var data:ByteArray=new ByteArray();
         data.writeInt(0xdead);
@@ -43,15 +38,13 @@ public class TestGIFStreamDecoder extends BaseStreamDecoderTest
     }
 
     [Test]
-    public function testAnimation():void
+    public function testImage():void
     {
         var output:FrameConsumer=new OutputTracker(addAsync(function():void {}),fail);
-        var decoder:GIFStreamDecoder=new GIFStreamDecoder(output);
+        var decoder:JPGStreamDecoder=new JPGStreamDecoder(output);
 
-        streamResource(new LUCY_ANIMATED(), decoder);
+        streamResource(new LUCY_STATIC(), decoder);
     }
 }
 
 }
-
-

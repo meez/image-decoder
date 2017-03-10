@@ -2,3 +2,7 @@
 .idea
 build
 build.properties
+
+# FlashDevelop Projects
+*.as3proj
+obj
