@@ -4,4 +4,4 @@
 [submodule "Flash-Animated-GIF-Library"]
 	path = Flash-Animated-GIF-Library
 	url = git@github.com:meez/Flash-Animated-GIF-Library
-	branch = pmcd-codec
+	branch = pmcd-goto
