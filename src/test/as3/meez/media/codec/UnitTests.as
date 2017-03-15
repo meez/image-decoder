@@ -5,10 +5,10 @@ import asunit.framework.TestResult;
 import asunit.framework.TestSuite;
 
 import flash.desktop.NativeApplication;
-
 import flash.events.Event;
 
 import meez.media.codec.gif.TestGIFStreamDecoder;
+import meez.media.codec.jpg.TestJPGStreamDecoder;
 
 /** Unit-tests */
 public class UnitTests extends TestSuite
@@ -21,6 +21,8 @@ public class UnitTests extends TestSuite
         addEventListener(Event.COMPLETE,onTestComplete);
 
         addTest(new TestGIFStreamDecoder());
+        addTest(new TestJPGStreamDecoder());
+        addTest(new TestAutoDetectDecoder());
     }
 
     /** test complete event handler */

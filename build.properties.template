@@ -1,0 +1,9 @@
+# AIR SDK
+air.sdk.home=PATH/TO/AIR/SDK
+
+# IOS
+ios.sdk.version=[IPHONEOS] [Optional]
+
+# Android 
+android.sdk.home=PATH/TO/ANDROID/SDK [Optional]
+android.sdk.platform=PATH/TO/ANDROID/SDK/PLATFORMS/PLATFORM [Optional]
