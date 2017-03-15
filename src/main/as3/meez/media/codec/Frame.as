@@ -13,6 +13,9 @@ public class Frame
 
     /** Data */
     public var data:*;
+    
+    /** Duration of Frame (in Milliseconds) */
+    public var duration:Number=0;
 
     // Public methods
 
@@ -26,7 +29,7 @@ public class Frame
     /** Return string representation */
     public function toString():String
     {
-        return "Frame(contentType="+contentType+",data="+data+")";
+        return "Frame(contentType="+contentType+",data="+data+",duration="+duration+")";
     }
 
     /** Dispose */

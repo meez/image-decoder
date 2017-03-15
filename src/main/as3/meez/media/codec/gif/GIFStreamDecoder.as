@@ -68,8 +68,9 @@ public class GIFStreamDecoder extends StreamDecoder
         while (decoder.frames.length>0)
         {
             var gf:GIFFrame=decoder.frames.pop();
-
-            this.out.onFrame(new Frame("image/gif",gf.bitmapData));
+            var f:Frame=new Frame("image/gif", gf.bitmapData);
+            f.duration=gf.delayMs;
+            this.out.onFrame(f);
         }
 
         this.out.onComplete();
