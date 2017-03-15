@@ -22,7 +22,7 @@ public class UnitTests extends TestSuite
 
         addTest(new TestGIFStreamDecoder());
         addTest(new TestJPGStreamDecoder());
-        addTest(new TestDecoderFactory());
+        addTest(new TestAutoDetectDecoder());
     }
 
     /** test complete event handler */

@@ -35,6 +35,29 @@ public class GIFStreamDecoder extends StreamDecoder
         this.decoder.addEventListener(GIFDecoderEvent.DECODE_COMPLETE, onDecoderComplete);
         this.decoder.addEventListener(AsyncDecodeErrorEvent.ASYNC_DECODE_ERROR, onDecodeError);
     }
+    
+    // Public Static Methods
+    
+    /** Matches Header */
+    public static function matchesHeader(bytes:ByteArray):Boolean
+    {
+        try
+        {
+            bytes.position=0;
+            if (bytes.bytesAvailable<3)
+                return false;
+                
+            var id:String=bytes.readMultiByte(3, "ascii");
+            if (id=="GIF")
+                return true;
+        }
+        catch (e:Error)
+        {
+            trace("[JPGDecoder] matchesHeader error", e);
+            return false;
+        }
+        return false;
+    }
 
     // Events
 

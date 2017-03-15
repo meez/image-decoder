@@ -9,7 +9,7 @@ import mockolate.received;
 import mockolate.stub;
 import org.hamcrest.assertThat;
 
-public class TestDecoderFactory extends BaseStreamDecoderTest
+public class TestAutoDetectDecoder extends BaseStreamDecoderTest
 {
     // Definitions
 
@@ -39,7 +39,7 @@ public class TestDecoderFactory extends BaseStreamDecoderTest
         },addAsync(function(reason:String):void {
             trace("expected failure: "+reason);
         }));
-        var decoder:DecoderFactory=new DecoderFactory(output);
+        var decoder:AutoDetectDecoder=new AutoDetectDecoder(output);
         
         // Unrecognized image type
         var data:ByteArray=new ByteArray();
@@ -55,13 +55,14 @@ public class TestDecoderFactory extends BaseStreamDecoderTest
         var success:Function=addAsync(function():void {
             // Animated Lucy has 18 Frames - ensure they are all accounted for
             assertThat(output, received().method("onFrame").times(18));
+            assertThat(output, received().method("onComplete").once());
         });
         
         var output:OutputTracker=nice(OutputTracker, "output", [success, fail]);
         stub(output).method("onFrame").callsSuper();
         stub(output).method("onComplete").callsSuper();
         stub(output).method("onError").callsSuper();
-        var decoder:DecoderFactory=new DecoderFactory(output);
+        var decoder:AutoDetectDecoder=new AutoDetectDecoder(output);
         
         streamResource(new LUCY_ANIMATED(), decoder);
     }
@@ -72,15 +73,43 @@ public class TestDecoderFactory extends BaseStreamDecoderTest
         var success:Function=addAsync(function():void {
             // Only single frame in jpg
             assertThat(output, received().method("onFrame").once());
+            assertThat(output, received().method("onComplete").once());
         });
         
         var output:FrameConsumer=nice(OutputTracker, "output", [success, fail]);
         stub(output).method("onFrame").callsSuper();
         stub(output).method("onComplete").callsSuper();
         stub(output).method("onError").callsSuper();
-        var decoder:DecoderFactory=new DecoderFactory(output);
+        var decoder:AutoDetectDecoder=new AutoDetectDecoder(output);
         
         streamResource(new LUCY_STATIC(), decoder);
+    }
+    
+    [Test]
+    public function testDripFeed():void
+    {
+        // Tests AutoDetect Decoder 1 byte at a time
+        
+        var success:Function=addAsync(function():void {
+            // Only single frame in jpg
+            assertThat(output, received().method("onFrame").once());
+            assertThat(output, received().method("onComplete").once());
+        });
+        
+        var output:FrameConsumer=nice(OutputTracker, "output", [success, fail]);
+        stub(output).method("onFrame").callsSuper();
+        stub(output).method("onComplete").callsSuper();
+        stub(output).method("onError").callsSuper();
+        var decoder:AutoDetectDecoder=new AutoDetectDecoder(output);
+        var bytes:ByteArray=new LUCY_STATIC();
+        var buffer:ByteArray=new ByteArray();
+        bytes.position=0;
+        for (var i:int=0; i<bytes.bytesAvailable; i++)
+        {
+            buffer.writeBytes(bytes, i, 1);
+            decoder.onData(buffer);
+        }
+        decoder.onComplete();
     }
 }
 
