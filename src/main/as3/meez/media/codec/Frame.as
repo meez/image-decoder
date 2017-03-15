@@ -15,7 +15,7 @@ public class Frame
     public var data:*;
     
     /** Duration of Frame (in Milliseconds) */
-    public var duration:Number=-1;
+    public var duration:Number=0;
 
     // Public methods
 
